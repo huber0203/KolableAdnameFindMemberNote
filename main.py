@@ -101,10 +101,10 @@ class DataExtractor:
         """查询站点数据 - 使用固定端点和站点自己的propertyId"""
         session = await self.create_session()
         
-        # 构建GraphQL查询 - 使用站点自己的propertyId
-        graphql_query = {
-            "operationName": "SearchMemberNotesWithCountAndTime",
-            "query": """query SearchMemberNotesWithCountAndTime($propertyId: uuid!, $value: String!, $start: timestamptz!, $end: timestamptz!) {
+        # 構建GraphQL查詢 - 使用站點自己的propertyId
+graphql_query = {
+    "operationName": "SearchMemberNotesWithCountAndTime",
+    "query": """query SearchMemberNotesWithCountAndTime($propertyId: uuid!, $value: String!, $start: timestamptz!, $end: timestamptz!) {
   member_aggregate(
     where: {
       member_properties: { property_id: { _eq: $propertyId }, value: { _eq: $value } },
@@ -123,7 +123,13 @@ class DataExtractor:
       member_notes: { description: { _is_null: false, _neq: "" } }
     }
   ) {
+    id
+    username
+    name
+    email
+    created_at
     member_notes(where: { description: { _is_null: false, _neq: "" } }, order_by: { created_at: desc }) {
+      id
       created_at
       description
     }
